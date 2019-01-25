@@ -1,0 +1,41 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="lessonRow"
+            type="changhua.com.hanziflash.data.LessonItem"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:padding="6dip"
+        android:orientation="horizontal"
+        android:layout_weight="10" >
+
+        <TextView
+            android:id="@+id/lessonName"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:contentDescription="TODO"
+            android:text="@{lessonRow.lessonName}" />
+
+        <TextView
+            android:id="@+id/wordsDemo"
+            android:text="@{lessonRow.wordsDemo}"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="7"
+            android:maxLines="1"
+
+            android:textSize="16sp" />
+
+
+
+    </LinearLayout>
+
+</layout>
