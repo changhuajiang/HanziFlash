@@ -4,23 +4,21 @@ package changhua.com.hanziflash.model;
 
 public class Lesson {
 
+    public String title;
+    public String hanzi;
 
-    private String  lessonName;
     private int     wordsCount;
     private String  wordsDemo;
-    private String  allWords;
+
     private int     lessonID;
 
-    public  Lesson(String lessonName, String allWords) {
-
-        this.lessonName = lessonName;
-        //this.wordsCount = wordsCount;
-        this.allWords = allWords;
+    public  Lesson(String title, String hanzi) {
+        this.title = title;
+        this.hanzi = hanzi;
     }
 
 
-    public String getLessonName() { return lessonName;}
-
+    public String getTitle() { return title;}
 
     public int getWordsCount() { return wordsCount;}
 
@@ -28,8 +26,8 @@ public class Lesson {
         return wordsDemo;
     }
 
-    public  void setLessonName(String lessonName){
-        this.lessonName = lessonName;
+    public  void setTitle(String title){
+        this.title = title;
 
     }
 
@@ -53,12 +51,12 @@ public class Lesson {
 
     }
 
-    public void setAllWords(String allWords) {
-        this.allWords= allWords;
+    public void setHanzi(String hanzi) {
+        this.hanzi = hanzi;
 
     }
-    public String getAllWords( ) {
-        return this.allWords;
+    public String getHanzi( ) {
+        return this.hanzi;
 
     }
 }

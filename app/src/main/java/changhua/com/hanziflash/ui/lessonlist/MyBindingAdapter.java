@@ -5,14 +5,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
 /**
  *
  */
 
 public class MyBindingAdapter {
 
-//    @BindingAdapter({"bind:imageUrl", "bind:error"})
+    //    @BindingAdapter({"bind:imageUrl", "bind:error"})
 //    public static void loadImage(ImageView view, String url, Drawable error) {
 ////        Picasso.with(view.getContext()).load(url).error(error).into(view);
 //    }

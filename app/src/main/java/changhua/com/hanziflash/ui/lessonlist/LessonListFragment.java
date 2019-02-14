@@ -1,6 +1,7 @@
 package changhua.com.hanziflash.ui.lessonlist;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,16 +17,15 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 import changhua.com.hanziflash.LessonListActivity;
+import changhua.com.hanziflash.ModifyLesssonActivity;
 import changhua.com.hanziflash.R;
 import changhua.com.hanziflash.data.LessonData;
 import changhua.com.hanziflash.data.LessonItem;
-import changhua.com.hanziflash.model.Lesson;
 
-public class LessonListFragment extends Fragment implements MyAdapter.ItemClickListener {
+public class LessonListFragment extends Fragment implements MyAdapter.ItemClickListener, MyBaseAdapter.EditBtClickListener {
 
 
     private LessonListViewModel mViewModel;
@@ -58,9 +58,12 @@ public class LessonListFragment extends Fragment implements MyAdapter.ItemClickL
         List<LessonItem> items = LessonData.getInstance().getLessionList();
 
         // define an adapter
-        mAdapter = new MyAdapter(items);
+        mAdapter = new MyAdapter();
+
+        mAdapter.setData(items);
 
         mAdapter.setClickListener(this);
+        mAdapter.seteEditClickListener(this);
         recyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -68,6 +71,18 @@ public class LessonListFragment extends Fragment implements MyAdapter.ItemClickL
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //List<LessonItem> items = LessonData.getInstance().getLessionList();
+
+        // define an adapter
+
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -81,13 +96,29 @@ public class LessonListFragment extends Fragment implements MyAdapter.ItemClickL
     public void onItemClick(View view, int position) {
         //Toast.makeText(getActivity(), "You clicked on row number " + position, Toast.LENGTH_SHORT).show();
 
-        LessonData.getInstance().setCurrenID( position);
+        LessonData.getInstance().setCurrenID(position);
 
         getActivity().setResult(LessonListActivity.REQUEST_CODE);
         getActivity().finish();
 
     }
 
+    @Override
+    public void onClickEdit(int position) {
+        Toast.makeText(getActivity(), "You clicked on row number " + position, Toast.LENGTH_SHORT).show();
+
+
+        Intent i = new Intent(getContext(), ModifyLesssonActivity.class);
+
+        Bundle b = new Bundle();
+        b.putInt("LessonID", position); //Your id
+        i.putExtras(b); //Put your id to your next Intent
+
+        //i.putExtra( "LessonID", position);
+        startActivity(i);
+
+
+    }
 
 
 }

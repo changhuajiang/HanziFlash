@@ -1,5 +1,7 @@
 package changhua.com.hanziflash.ui.main;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -24,7 +26,7 @@ import changhua.com.hanziflash.model.Lesson;
 
 
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     public ObservableField <String> word;
     public ObservableField <String> percent;
@@ -37,7 +39,7 @@ public class MainViewModel extends ViewModel {
 
 
     private Set<String> forgetWords ;
-    private Context context;
+    //private Context context;
     private int index = 0;
     private String json = null;
     private boolean isAll = true;
@@ -47,8 +49,9 @@ public class MainViewModel extends ViewModel {
     public static final String TAG = "MainViewModel";
 
 
-    public MainViewModel( Context c) {
-        context = c;
+    public MainViewModel( Application c) {
+        super(c);
+        //context = c;
         forgetWords  = new HashSet<String>();
         word = new ObservableField<>("");
         wordCount = new ObservableField<>(0);
@@ -71,7 +74,6 @@ public class MainViewModel extends ViewModel {
         String forgetText = String.format("Forgot:(%d)", forgetWords.size());
         filterBtnText.set( forgetText);
 
-
         //LessonData.getInstance().getCurrentName().observe(context, nameObserver);
     }
     public void onClickedBtNext() {
@@ -80,7 +82,6 @@ public class MainViewModel extends ViewModel {
         }
         word.set( words[index] );
         Log.d( "MainViewModel", "ClickNext" );
-
         //getAllHanzi();
         wordIndex.set(index+1);
 
@@ -160,14 +161,15 @@ public class MainViewModel extends ViewModel {
 
     public void saveForgetWords( ) {
         //
-        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, context.MODE_PRIVATE).edit();
+
+        SharedPreferences.Editor editor = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE).edit();
         editor.putStringSet("forget", forgetWords);
         editor.apply();
     }
 
     public void loadForgetWords( ) {
         //
-        SharedPreferences sp = context.getSharedPreferences(MY_PREFS_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE);
         forgetWords = sp.getStringSet("forget",null );
         if ( forgetWords == null ) {
             forgetWords  = new HashSet<String>();

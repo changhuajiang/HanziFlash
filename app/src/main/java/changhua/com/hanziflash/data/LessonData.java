@@ -3,9 +3,8 @@ package changhua.com.hanziflash.data;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +16,12 @@ import changhua.com.hanziflash.model.Lesson;
 public class LessonData {
 
     List<LessonItem> lessonList = new ArrayList<LessonItem>() ;
+
+    List<Lesson>  lessons  = new ArrayList<Lesson>();
+
+    HanziCollection allLessonData;
+
+
     int current = 0;
 
     static LessonData instance;
@@ -32,9 +37,14 @@ public class LessonData {
     }
 
 
-    Lesson[] lessons ;
+
     public void initLessonData( Context c) {
-        loadLessonFromAsset(  c );
+
+        String jsonText = LocalStorage.getInstance(c).loadAllLession( );
+        if ( jsonText == null || jsonText.isEmpty()) {
+            loadLessonFromAsset(c);
+            saveHanziToLocal(c);
+        }
 
     }
 
@@ -52,7 +62,6 @@ public class LessonData {
             String json = new String(buffer, "UTF-8");
             getAllLesson( json );
 
-
         } catch (IOException ex) {
             ex.printStackTrace();
 
@@ -60,33 +69,22 @@ public class LessonData {
 
     }
 
-
     private void getAllLesson(String json ) {
-        try {
-            JSONObject root = new JSONObject(json );
 
-            JSONObject obj = root.getJSONObject("collection");
-            JSONArray jArry = obj.getJSONArray("lessons");
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
 
-            lessons  = new Lesson[jArry.length()];
-            //words = new String[m_jArry.length()];
+        allLessonData = gson.fromJson( json,  HanziCollection.class);
 
-            for (int i = 0; i < jArry.length(); i++) {
-                //words[i]  = jArry.getString(i);
-                lessons[i] = new Lesson(jArry.getJSONObject(i).getString("title" ),
-                        jArry.getJSONObject(i).getString("hanzi" ));
-                lessons[i].setLessonID( i );
-//                lessons[i].setLessonName( jArry.getJSONObject(i).getString("title" ) );
-//                lessons[i].setAllWords( jArry.getJSONObject(i).getString("hanzi" ) );
-//                lessons[i].setWordsDemo( jArry.getJSONObject(i).getString("hanzi" ).substring(0, 10) );
+        for (int i = 0; i < allLessonData.collection.lessons.size(); i++) {
 
-                lessonList.add( new LessonItem(lessons[i] ));
-            }
+            Lesson lesson = new Lesson(allLessonData.collection.lessons.get(i).title,
+                    allLessonData.collection.lessons.get(i).hanzi);
 
+            lesson.setLessonID( i );
 
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            lessonList.add( new LessonItem(lesson ));
+            lessons.add(lesson );
         }
     }
 
@@ -99,17 +97,33 @@ public class LessonData {
     }
 
     public String[] getHanzi( int index ){
-        int wordCount = lessons[index].getAllWords().length();
+        int wordCount = lessons.get(index).getHanzi().length();
         String[]words = new String[wordCount];
 
         for ( int i = 0; i < wordCount; i ++  ) {
 
-            words[i] = new String( lessons[index].getAllWords().charAt(i) + "");
+            words[i] = new String( lessons.get(index).getHanzi().charAt(i) + "");
         }
 
         return words;
     }
 
+    public String getHanziAsString( int index ){
+
+        String allWords = new String(lessons.get(index).getHanzi());
+        return allWords;
+    }
+
+    public String getLessonName( int index ){
+
+        return( new String(lessons.get(index).getTitle() ));
+    }
+    public void saveHanziAsString( int index , String lessonName , String newWord){
+
+        lessons.set(index,new Lesson( lessonName, newWord ));
+
+        // Save
+    }
 
     private MutableLiveData <String> mCurrentName;
 
@@ -119,5 +133,36 @@ public class LessonData {
         }
         return mCurrentName;
     }
+
+    public void appendNewLesson( Context c, String lessonName, String allWord) {
+        Lesson lesson = new Lesson(lessonName, allWord);
+        lesson.setLessonID(lessonList.size());
+        lessonList.add( new LessonItem(lesson ) );
+
+        allLessonData.collection.lessons.add( new LessonBase(lessonName,allWord ));
+
+        saveHanziToLocal(c);
+
+    }
+
+    public void setLesson( Context c, int id, String lessonName, String allWord) {
+        if ( id >=0 && id <lessonList.size() ) {
+            Lesson lesson = new Lesson(lessonName, allWord);
+            lesson.setLessonID(id);
+            lessonList.set(id, new LessonItem(lesson));
+
+            allLessonData.collection.lessons.set( id, new LessonBase(lessonName,allWord ));
+
+            saveHanziToLocal(c);
+        }
+    }
+
+    private void saveHanziToLocal( Context c) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        LocalStorage.getInstance(c).saveAllLession( gson.toJson(allLessonData) );
+    }
+
 
 }

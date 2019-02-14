@@ -2,8 +2,6 @@ package changhua.com.hanziflash.data;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.view.View;
-import android.widget.Toast;
 
 import changhua.com.hanziflash.model.Lesson;
 
@@ -20,9 +18,9 @@ public class LessonItem extends BaseObservable {
 
     public LessonItem(Lesson lesson) {
         this.lesson = lesson;
-        this.lessonName = lesson.getLessonName();
+        this.lessonName = lesson.getTitle();
         this.wordsCount = lesson.getWordsCount();
-        this.wordsDemo = lesson.getAllWords().substring(0,10);
+        this.wordsDemo = lesson.getHanzi().substring(0,10);
         this.lessionID = lesson.getLessonID();
     }
     public LessonItem(String lessonName, int wordsCount, String wordsDemo) {
@@ -30,7 +28,7 @@ public class LessonItem extends BaseObservable {
         this.lessonName = lessonName;
         this.wordsCount = wordsCount;
         this.wordsDemo = wordsDemo;
-        //lesson = new Lesson( lessonName, wordsCount, wordsDemo);
+
     }
 
     @Bindable
@@ -43,21 +41,29 @@ public class LessonItem extends BaseObservable {
         return this.wordsDemo;
     }
 
+    @Bindable
+    public int getLessionID() {
+        return this.lessionID;
+    }
 
     public  void setLessonName(String lessonName){
         this.lessonName = lessonName;
-        //notifyPropertyChanged(BR.location);
+        //notifyPropertyChanged(BR.);
     }
 
     public void setWordsDemo(String wordsDemo) {
         this.wordsDemo= wordsDemo;
-        //notifyPropertyChanged(BR.celsius);
+        //notifyPropertyChanged(BR.);
     }
 
     public void setWordsCount(int wordsCount) {
         this.wordsCount= wordsCount;
-        //notifyPropertyChanged(BR.celsius);
+        //notifyPropertyChanged(BR.);
     }
 
+    public void setLessionID(int lessionID) {
+        this.lessionID= lessionID;
+        //notifyPropertyChanged(BR.);
+    }
 
 }

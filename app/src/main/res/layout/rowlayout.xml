@@ -2,10 +2,21 @@
 
     <data>
 
+
+        <variable name="index" type="int"/>
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
         <variable
             name="lessonRow"
             type="changhua.com.hanziflash.data.LessonItem"
             />
+
+        <variable
+            name="itemClickListener"
+            type="changhua.com.hanziflash.ui.lessonlist.MyBaseAdapter.EditBtClickListener" />
     </data>
 
     <LinearLayout
@@ -13,13 +24,13 @@
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:padding="6dip"
         android:orientation="horizontal"
-        android:layout_weight="10" >
+        android:layout_weight="12" >
 
         <TextView
-            android:id="@+id/lessonName"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:layout_weight="3"
             android:contentDescription="TODO"
             android:text="@{lessonRow.lessonName}" />
@@ -29,11 +40,18 @@
             android:text="@{lessonRow.wordsDemo}"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_weight="7"
+            android:gravity="center_vertical"
+            android:layout_weight="8"
             android:maxLines="1"
-
             android:textSize="16sp" />
 
+        <Button
+            android:id="@+id/edit_lesson"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:onClick="@{() -> itemClickListener.onClickEdit( lessonRow.lessionID)}"
+            android:text="Edit" />
 
 
     </LinearLayout>

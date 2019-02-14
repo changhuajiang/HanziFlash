@@ -1,7 +1,10 @@
 package changhua.com.hanziflash;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import changhua.com.hanziflash.ui.lessonlist.LessonListFragment;
 
@@ -20,4 +23,12 @@ public class LessonListActivity extends AppCompatActivity {
                     .commitNow();
         }
     }
+
+    public void onClickNew(View view) {
+        Toast.makeText(this, "You clicked NEW lesson", Toast.LENGTH_SHORT).show();
+
+        Intent i = new Intent(this, ModifyLesssonActivity.class);
+        startActivity(i);
+    }
+
 }

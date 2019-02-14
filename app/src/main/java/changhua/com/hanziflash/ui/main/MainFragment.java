@@ -29,7 +29,7 @@ import changhua.com.hanziflash.databinding.MainFragmentBinding;
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private MainViewModel mViewModel;
-    private MainFragmentBinding  binding;
+    private MainFragmentBinding binding;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -45,9 +45,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         LessonData.getInstance().initLessonData(this.getActivity());
 
-        mViewModel = new MainViewModel(this.getActivity());
+        mViewModel = new MainViewModel(this.getActivity().getApplication());
         mViewModel.init(getActivity());
-
 
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.main_fragment, container, false);
@@ -76,18 +75,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         int width = displayMetrics.widthPixels;
 
 
-        Log.v( "mywordcard", "height= " + height );
-        Log.v( "mywordcard", "width= " + width );
+        Log.v("mywordcard", "height= " + height);
+        Log.v("mywordcard", "width= " + width);
 
-        mCard.setTypeface( fontFace );
-        mCard.setTextSize(TypedValue.COMPLEX_UNIT_PX, width- 32);
+        mCard.setTypeface(fontFace);
+        mCard.setTextSize(TypedValue.COMPLEX_UNIT_PX, width - 32);
         mCard.setTextColor(Color.BLACK);
 
         return view;
 
     }
+
     @Override
-    public void onResume( ) {
+    public void onResume() {
         super.onResume();
     }
 
@@ -127,12 +127,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         // nothing
                     }
                     return super.onFling(e1, e2, velocityX, velocityY);
-            }
-    });
+                }
+            });
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mViewModel.handleActivityResult( requestCode, resultCode);
+        mViewModel.handleActivityResult(requestCode, resultCode);
     }
 
 
@@ -140,7 +140,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view == binding.more) {
             Intent i = new Intent(getContext(), LessonListActivity.class);
-            startActivityForResult(i, LessonListActivity.REQUEST_CODE );
+            startActivityForResult(i, LessonListActivity.REQUEST_CODE);
         }
     }
 
