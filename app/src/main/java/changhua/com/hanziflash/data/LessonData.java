@@ -44,6 +44,8 @@ public class LessonData {
         if ( jsonText == null || jsonText.isEmpty()) {
             loadLessonFromAsset(c);
             saveHanziToLocal(c);
+        } else {
+            getAllLesson(jsonText );
         }
 
     }
@@ -141,6 +143,7 @@ public class LessonData {
 
         allLessonData.collection.lessons.add( new LessonBase(lessonName,allWord ));
 
+        lessons.add(lesson );
         saveHanziToLocal(c);
 
     }
@@ -152,6 +155,8 @@ public class LessonData {
             lessonList.set(id, new LessonItem(lesson));
 
             allLessonData.collection.lessons.set( id, new LessonBase(lessonName,allWord ));
+
+            lessons.add(lesson );
 
             saveHanziToLocal(c);
         }
