@@ -78,6 +78,9 @@ public class LessonData {
 
         allLessonData = gson.fromJson( json,  HanziCollection.class);
 
+        lessonList.clear();
+        lessons.clear();
+
         for (int i = 0; i < allLessonData.collection.lessons.size(); i++) {
 
             Lesson lesson = new Lesson(allLessonData.collection.lessons.get(i).title,
@@ -90,6 +93,9 @@ public class LessonData {
         }
     }
 
+    private void getAllLesson( ) {
+
+    }
     public String[] getHanzi( ){
         return getHanzi(current);
     }
@@ -145,6 +151,15 @@ public class LessonData {
 
         lessons.add(lesson );
         saveHanziToLocal(c);
+
+    }
+
+    public void removeLesson( Context c, int id) {
+        allLessonData.collection.lessons.remove( id);
+
+        saveHanziToLocal(c);
+
+        initLessonData(c);
 
     }
 

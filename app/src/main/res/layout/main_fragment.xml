@@ -59,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
-                android:max="@{viewModel.wordCount}"
-                android:progress="@{viewModel.wordIndex}" />
+                android:max="@{safeUnbox(viewModel.wordCount )}"
+                android:progress="@{safeUnbox(viewModel.wordIndex )}" />
 
             <TextView
                 android:id="@+id/textView"

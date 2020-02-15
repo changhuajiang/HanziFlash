@@ -20,7 +20,11 @@ public class LessonItem extends BaseObservable {
         this.lesson = lesson;
         this.lessonName = lesson.getTitle();
         this.wordsCount = lesson.getWordsCount();
-        this.wordsDemo = lesson.getHanzi().substring(0,10);
+        if ( lesson.getHanzi().length() > 10 ) {
+            this.wordsDemo = lesson.getHanzi().substring(0, 10);
+        } else {
+            this.wordsDemo = lesson.getHanzi();
+        }
         this.lessionID = lesson.getLessonID();
     }
     public LessonItem(String lessonName, int wordsCount, String wordsDemo) {

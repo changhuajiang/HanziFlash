@@ -37,6 +37,14 @@ public class ModifyLesssonViewModel extends AndroidViewModel {
         onEndLive.setValue(true);
     }
 
+
+    public void onClickedDelete() {
+
+        LessonData.getInstance().removeLesson (getApplication(), lessonID );
+        onEndLive.setValue(true);
+    }
+
+
     public void initWord(int lessonID) {
         this.lessonID = lessonID;
         if (lessonID < 0) {
