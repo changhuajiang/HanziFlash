@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import changhua.com.hanziflash.LessonListActivity;
@@ -119,7 +120,23 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     private void  getAllHanzi(){
+
         words =LessonData.getInstance().getHanzi();
+
+        Random rd = new Random();
+
+        for( int i = 1; i < words.length; i ++) {
+            int next = rd.nextInt(i +1);
+
+            String tmp = words[next];
+            words[next] = words[i];
+            words[i] = tmp;
+
+
+        }
+
+
+
     }
 
 

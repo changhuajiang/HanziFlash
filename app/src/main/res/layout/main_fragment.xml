@@ -37,6 +37,7 @@
             android:text="@{viewModel.word}"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textSize="300sp" />
+
         </LinearLayout>
 
     <TableLayout
@@ -60,7 +61,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
                 android:max="@{safeUnbox(viewModel.wordCount )}"
-                android:progress="@{safeUnbox(viewModel.wordIndex )}" />
+                android:progress="@{safeUnbox(viewModel.wordIndex)}" />
 
             <TextView
                 android:id="@+id/textView"
