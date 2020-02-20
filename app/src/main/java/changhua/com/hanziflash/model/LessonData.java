@@ -22,14 +22,14 @@ import changhua.com.hanziflash.data.LocalStorage;
  */
 public class LessonData {
 
-    List<LessonBase>  lessons  = new ArrayList<>();
+    private List<LessonBase>  lessons  = new ArrayList<>();
 
-    HanziCollection allLessonData;
+    private HanziCollection allLessonData;
 
 
-    int current = 0;
+    private int current = 0;
 
-    static LessonData instance;
+    private static LessonData instance;
 
     private  String[] pinyins = null;
 
@@ -43,8 +43,6 @@ public class LessonData {
     private  LessonData() {
 
     }
-
-
 
     public void initLessonData( Context c) {
 
@@ -95,7 +93,6 @@ public class LessonData {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-
         }
 
     }
@@ -110,7 +107,8 @@ public class LessonData {
         lessons = allLessonData.collection.lessons;
 
         for (int i = 0; i < lessons.size(); i++) {
-            lessons.get(i).setLessonID( i);
+            lessons.get(i).setLessonID(i);
+            lessons.get(i).makeShowDemo();
         }
     }
 

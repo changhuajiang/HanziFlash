@@ -11,7 +11,6 @@ public class LessonBase extends BaseObservable {
 
     private int wordsCount;
     private String wordsDemo;
-
     private int lessonID;
 
 
@@ -19,6 +18,10 @@ public class LessonBase extends BaseObservable {
         this.hanzi = hanzi;
         this.title = title;
 
+        makeShowDemo();
+    }
+
+    public void makeShowDemo() {
         wordsCount = hanzi.length();
         if ( wordsCount > 10 ) {
             this.wordsDemo = hanzi.substring(0, 10);
@@ -26,7 +29,6 @@ public class LessonBase extends BaseObservable {
             this.wordsDemo = hanzi;
         }
     }
-
     public LessonBase(String title, String hanzi,String pinyin) {
         this.hanzi = hanzi;
         this.title = title;
