@@ -22,8 +22,9 @@ import java.util.List;
 import changhua.com.hanziflash.LessonListActivity;
 import changhua.com.hanziflash.ModifyLesssonActivity;
 import changhua.com.hanziflash.R;
-import changhua.com.hanziflash.data.LessonData;
-import changhua.com.hanziflash.data.LessonItem;
+import changhua.com.hanziflash.data.LessonBase;
+import changhua.com.hanziflash.model.LessonData;
+
 
 public class LessonListFragment extends Fragment implements MyAdapter.ItemClickListener, MyBaseAdapter.EditBtClickListener {
 
@@ -55,7 +56,7 @@ public class LessonListFragment extends Fragment implements MyAdapter.ItemClickL
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        List<LessonItem> items = LessonData.getInstance().getLessionList();
+        List<LessonBase> items = LessonData.getInstance().getLessionList();
 
         // define an adapter
         mAdapter = new MyAdapter();

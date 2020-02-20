@@ -1,4 +1,4 @@
-package changhua.com.hanziflash.data;
+package changhua.com.hanziflash.model;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
@@ -11,13 +11,18 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import changhua.com.hanziflash.model.Lesson;
+import changhua.com.hanziflash.data.HanziCollection;
+import changhua.com.hanziflash.data.LessonBase;
+import changhua.com.hanziflash.data.LocalStorage;
 
+
+/****
+ * record all the lesseons data and the currect select one for main UI
+ *
+ */
 public class LessonData {
 
-    List<LessonItem> lessonList = new ArrayList<LessonItem>() ;
-
-    List<Lesson>  lessons  = new ArrayList<Lesson>();
+    List<LessonBase>  lessons  = new ArrayList<>();
 
     HanziCollection allLessonData;
 
@@ -25,6 +30,9 @@ public class LessonData {
     int current = 0;
 
     static LessonData instance;
+
+    private  String[] pinyins = null;
+
 
     public static LessonData getInstance(){
         if( instance == null ) {
@@ -50,8 +58,9 @@ public class LessonData {
 
     }
 
-    public List<LessonItem> getLessionList( ) {
-        return lessonList;
+    public List<LessonBase> getLessionList( ) {
+
+        return  lessons;
     }
     private void loadLessonFromAsset( Context c ) {
 
@@ -71,6 +80,26 @@ public class LessonData {
 
     }
 
+    private void loadPinyinFromAsset( Context c ) {
+
+        try {
+            InputStream is = c.getAssets().open("pinyin.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String pinyinAll= new String(buffer, "UTF-8");
+
+            pinyins = pinyinAll.split(",");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+        }
+
+    }
+
     private void getAllLesson(String json ) {
 
         GsonBuilder builder = new GsonBuilder();
@@ -78,18 +107,10 @@ public class LessonData {
 
         allLessonData = gson.fromJson( json,  HanziCollection.class);
 
-        lessonList.clear();
-        lessons.clear();
+        lessons = allLessonData.collection.lessons;
 
-        for (int i = 0; i < allLessonData.collection.lessons.size(); i++) {
-
-            Lesson lesson = new Lesson(allLessonData.collection.lessons.get(i).title,
-                    allLessonData.collection.lessons.get(i).hanzi);
-
-            lesson.setLessonID( i );
-
-            lessonList.add( new LessonItem(lesson ));
-            lessons.add(lesson );
+        for (int i = 0; i < lessons.size(); i++) {
+            lessons.get(i).setLessonID( i);
         }
     }
 
@@ -128,7 +149,7 @@ public class LessonData {
     }
     public void saveHanziAsString( int index , String lessonName , String newWord){
 
-        lessons.set(index,new Lesson( lessonName, newWord ));
+        lessons.set(index,new LessonBase( lessonName, newWord ));
 
         // Save
     }
@@ -143,15 +164,10 @@ public class LessonData {
     }
 
     public void appendNewLesson( Context c, String lessonName, String allWord) {
-        Lesson lesson = new Lesson(lessonName, allWord);
-        lesson.setLessonID(lessonList.size());
-        lessonList.add( new LessonItem(lesson ) );
 
-        allLessonData.collection.lessons.add( new LessonBase(lessonName,allWord ));
+        lessons.add( new LessonBase(lessonName,allWord ));
 
-        lessons.add(lesson );
         saveHanziToLocal(c);
-
     }
 
     public void removeLesson( Context c, int id) {
@@ -164,20 +180,14 @@ public class LessonData {
     }
 
     public void setLesson( Context c, int id, String lessonName, String allWord) {
-        if ( id >=0 && id <lessonList.size() ) {
-            Lesson lesson = new Lesson(lessonName, allWord);
-            lesson.setLessonID(id);
-            lessonList.set(id, new LessonItem(lesson));
-
-            allLessonData.collection.lessons.set( id, new LessonBase(lessonName,allWord ));
-
-            lessons.add(lesson );
-
+        if ( id >=0 && id <lessons.size() ) {
+            lessons.set( id, new LessonBase(lessonName,allWord ));
             saveHanziToLocal(c);
         }
     }
 
     private void saveHanziToLocal( Context c) {
+
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 

@@ -3,33 +3,25 @@ package changhua.com.hanziflash.ui.main;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import changhua.com.hanziflash.LessonListActivity;
-import changhua.com.hanziflash.data.LessonData;
-import changhua.com.hanziflash.model.Lesson;
+import changhua.com.hanziflash.model.LessonData;
+
 
 
 
 public class MainViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     public ObservableField <String> word;
+    public ObservableField <String> pinyin;
     public ObservableField <String> percent;
     public ObservableField <Integer> wordCount;
     public ObservableField <Integer> wordIndex;
@@ -37,6 +29,7 @@ public class MainViewModel extends AndroidViewModel {
     public ObservableField <String> forgetBtnText;
 
     private String[] words;
+    private String[] pinyins;
 
 
     private Set<String> forgetWords ;

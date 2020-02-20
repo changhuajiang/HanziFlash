@@ -6,7 +6,7 @@
     <data>
         <variable
             name="lessons"
-            type="changhua.com.hanziflash.data.LessonItem" />
+            type="changhua.com.hanziflash.data.LessonBase" />
         <!--<variable-->
             <!--name="presenter"-->
             <!--type="com.vogella.android.databinding.MainActivityPresenter"/>-->

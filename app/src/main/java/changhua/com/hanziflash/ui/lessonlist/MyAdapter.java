@@ -5,17 +5,18 @@ import android.view.View;
 import java.util.List;
 
 import changhua.com.hanziflash.R;
-import changhua.com.hanziflash.data.LessonItem;
+import changhua.com.hanziflash.data.LessonBase;
+
 
 public class MyAdapter extends MyBaseAdapter {
-    private List<LessonItem> data;
+    private List<LessonBase> data;
 
     //private ItemClickListener mClickListener;
 
     public MyAdapter() {
     }
 
-    public void setData(List<LessonItem> myDataset) {
+    public void setData(List<LessonBase> myDataset) {
         if (data != null) {
             data.clear();
         }

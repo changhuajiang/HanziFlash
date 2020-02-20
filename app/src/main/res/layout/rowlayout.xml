@@ -11,7 +11,7 @@
 
         <variable
             name="lessonRow"
-            type="changhua.com.hanziflash.data.LessonItem"
+            type="changhua.com.hanziflash.data.LessonBase"
             />
 
         <variable
@@ -33,7 +33,7 @@
             android:gravity="center_vertical"
             android:layout_weight="3"
             android:contentDescription="TODO"
-            android:text="@{lessonRow.lessonName}" />
+            android:text="@{lessonRow.title}" />
 
         <TextView
             android:id="@+id/wordsDemo"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:onClick="@{() -> itemClickListener.onClickEdit( lessonRow.lessionID)}"
+            android:onClick="@{() -> itemClickListener.onClickEdit( lessonRow.lessonID)}"
             android:text="Edit" />
 
 

@@ -3,10 +3,9 @@ package changhua.com.hanziflash.ui.modifylessson;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
 
-import changhua.com.hanziflash.data.LessonData;
+import changhua.com.hanziflash.model.LessonData;
 
 public class ModifyLesssonViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel

@@ -1,6 +1,5 @@
 package changhua.com.hanziflash.ui.main;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,11 +17,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import changhua.com.hanziflash.LessonListActivity;
 import changhua.com.hanziflash.R;
-import changhua.com.hanziflash.data.LessonData;
+import changhua.com.hanziflash.model.LessonData;
 import changhua.com.hanziflash.databinding.MainFragmentBinding;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
