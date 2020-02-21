@@ -95,7 +95,7 @@ public class LessonListFragment extends Fragment implements MyAdapter.ItemClickL
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(getActivity(), "You clicked on row number " + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "You clicked on row number " + position, Toast.LENGTH_SHORT).show();
 
         LessonData.getInstance().setCurrenID(position);
 

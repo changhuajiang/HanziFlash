@@ -7,6 +7,7 @@ public class LessonBase extends BaseObservable {
     public String title;
     public String hanzi;
     public String pinyin;
+    public String[] pinyins;
 
 
     private int wordsCount;
@@ -80,6 +81,10 @@ public class LessonBase extends BaseObservable {
     }
     public String getHanzi( ) {
         return this.hanzi;
+
+    }
+
+    public void matchPinyin() {
 
     }
 }

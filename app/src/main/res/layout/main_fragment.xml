@@ -27,16 +27,36 @@
             android:orientation="vertical" >
 
         <TextView
+                android:id="@+id/lessonTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+
+                android:layout_gravity="left|center_vertical"
+                android:text="@{viewModel.title}"
+                 />
+        <TextView
             android:id="@+id/TextCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+
             android:layout_centerHorizontal="true"
 
             android:layout_gravity="center_horizontal|center_vertical"
             android:text="@{viewModel.word}"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3"
             android:textSize="300sp" />
+
+            <TextView
+                android:id="@+id/pinyin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@{viewModel.pinyin}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
 

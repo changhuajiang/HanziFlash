@@ -31,7 +31,7 @@ public class LessonData {
 
     private static LessonData instance;
 
-    private  String[] pinyins = null;
+    private  String[] allPinyins = null;
 
 
     public static LessonData getInstance(){
@@ -47,6 +47,8 @@ public class LessonData {
     public void initLessonData( Context c) {
 
         String jsonText = LocalStorage.getInstance(c).loadAllLession( );
+        loadPinyinFromAsset(c);
+
         if ( jsonText == null || jsonText.isEmpty()) {
             loadLessonFromAsset(c);
             saveHanziToLocal(c);
@@ -88,7 +90,7 @@ public class LessonData {
             is.close();
             String pinyinAll= new String(buffer, "UTF-8");
 
-            pinyins = pinyinAll.split(",");
+            allPinyins = pinyinAll.split(",");
 
 
         } catch (IOException ex) {
@@ -119,17 +121,60 @@ public class LessonData {
         return getHanzi(current);
     }
 
+
+    public String[] getPinyin(String[] hanzi ){
+        int wordCount = hanzi.length;
+        String[] pinyin = new String[wordCount];
+
+        for ( int i = 0; i < wordCount; i ++  ) {
+            char word = hanzi[i].charAt(0);
+            pinyin[i] = allPinyins[word-19968];
+        }
+
+        return pinyin;
+    }
+
+    public String[][] getHanziWithPinyin( ){
+        return getHanziWithPinyin(current);
+    }
+
+    public String getLessonName( ) {
+        return getLessonName(current);
+    }
+
+
     public void  setCurrenID( int currentID){
         current = currentID;
     }
 
-    public String[] getHanzi( int index ){
+    /****
+     *
+     * @param index
+     * @return String[0] :  Hanzi belongs to the lesson index
+     *         String[1] :  Pinyin match with each hanzi in Sring[0]
+     */
+    private String[][] getHanziWithPinyin( int index ){
+        int wordCount = lessons.get(index).getHanzi().length();
+        String[][] hanziWithPinyin = new String[2][wordCount];
+        hanziWithPinyin[0] = new String[wordCount];
+        hanziWithPinyin[1] = new String[wordCount];
+
+        for ( int i = 0; i < wordCount; i ++  ) {
+            char word = lessons.get(index).getHanzi().charAt(i);
+            hanziWithPinyin[0][i] = new String( word + "");
+            hanziWithPinyin[1][i] = allPinyins[word-19968];
+        }
+
+        return hanziWithPinyin;
+    }
+
+    private String[] getHanzi( int index ){
         int wordCount = lessons.get(index).getHanzi().length();
         String[]words = new String[wordCount];
 
         for ( int i = 0; i < wordCount; i ++  ) {
-
-            words[i] = new String( lessons.get(index).getHanzi().charAt(i) + "");
+            char word = lessons.get(index).getHanzi().charAt(i);
+            words[i] = new String( word + "");
         }
 
         return words;

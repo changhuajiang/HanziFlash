@@ -20,6 +20,7 @@ import changhua.com.hanziflash.model.LessonData;
 
 public class MainViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
+    public ObservableField <String> title;
     public ObservableField <String> word;
     public ObservableField <String> pinyin;
     public ObservableField <String> percent;
@@ -33,6 +34,7 @@ public class MainViewModel extends AndroidViewModel {
 
 
     private Set<String> forgetWords ;
+
     //private Context context;
     private int index = 0;
     private String json = null;
@@ -48,6 +50,8 @@ public class MainViewModel extends AndroidViewModel {
         //context = c;
         forgetWords  = new HashSet<String>();
         word = new ObservableField<>("");
+        title = new ObservableField<>("");
+        pinyin = new ObservableField<>("");
         wordCount = new ObservableField<>(0);
         wordIndex = new ObservableField<>(0);
         percent = new ObservableField<>("");
@@ -59,12 +63,13 @@ public class MainViewModel extends AndroidViewModel {
     public void init(  Context c) {
         Log.d( "MainViewModel", "init" );
 
-
         getAllHanzi();
         loadForgetWords();
 
+        title.set(LessonData.getInstance().getLessonName());
         wordCount.set(words.length);
         word.set( words[index] );
+        pinyin.set( pinyins[index]);
         String forgetText = String.format("Forgot:(%d)", forgetWords.size());
         filterBtnText.set( forgetText);
 
@@ -75,6 +80,7 @@ public class MainViewModel extends AndroidViewModel {
             index ++;
         }
         word.set( words[index] );
+        pinyin.set( pinyins[index]);
         Log.d( "MainViewModel", "ClickNext" );
         //getAllHanzi();
         wordIndex.set(index+1);
@@ -87,6 +93,7 @@ public class MainViewModel extends AndroidViewModel {
             index --;
         }
         word.set( words[index] );
+        pinyin.set( pinyins[index]);
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
     }
@@ -114,25 +121,31 @@ public class MainViewModel extends AndroidViewModel {
 
     private void  getAllHanzi(){
 
-        words =LessonData.getInstance().getHanzi();
+        title.set(LessonData.getInstance().getLessonName());
+
+        String[][] hanziWithPinyin = LessonData.getInstance().getHanziWithPinyin();
+
+        words = hanziWithPinyin[0];
+        pinyins = hanziWithPinyin[1];
 
         Random rd = new Random();
 
         for( int i = 1; i < words.length; i ++) {
             int next = rd.nextInt(i +1);
-
-            String tmp = words[next];
-            words[next] = words[i];
-            words[i] = tmp;
-
-
+            swapInString(words, i, next);
+            swapInString(pinyins, i, next);
         }
-
-
 
     }
 
 
+    private void swapInString( String[] array, int pos, int newPos) {
+        String tmp = array[pos];
+        array[pos] = array[newPos];
+        array[newPos] = tmp;
+
+
+    }
     public void onClickedBtAll() {
         getAllHanzi();
 
@@ -142,8 +155,10 @@ public class MainViewModel extends AndroidViewModel {
         index =0;
         isAll = true;
 
+
         wordCount.set(words.length);
         word.set( words[index] );
+        pinyin.set( pinyins[index]);
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
         forgetBtnText.set( "Forgot");
@@ -159,8 +174,9 @@ public class MainViewModel extends AndroidViewModel {
         isAll = false;
         index =0;
         words = forgetWords.toArray(new String[forgetWords.size()]);
-
+        pinyins = LessonData.getInstance().getPinyin( words);
         word.set( words[index] );
+        pinyin.set( pinyins[index]);
         wordCount.set(words.length);
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
