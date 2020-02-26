@@ -27,7 +27,7 @@ public class LocalStorage {
 
     // Save as Json
 
-    public void saveForgetWords(HashSet<String> forgetWords) {
+    public void saveForgetWords(Set<String> forgetWords) {
         SharedPreferences.Editor editor = contex.getSharedPreferences(MY_PREFS_NAME, contex.MODE_PRIVATE).edit();
         editor.putStringSet("forget", forgetWords);
         editor.apply();

@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import changhua.com.hanziflash.data.LocalStorage;
 import changhua.com.hanziflash.model.LessonData;
 
 
@@ -143,18 +144,16 @@ public class MainViewModel extends AndroidViewModel {
         String tmp = array[pos];
         array[pos] = array[newPos];
         array[newPos] = tmp;
-
-
     }
+
     public void onClickedBtAll() {
         getAllHanzi();
 
         if ( words.length == 0 ) {
             return;
         }
-        index =0;
+        index = 0;
         isAll = true;
-
 
         wordCount.set(words.length);
         word.set( words[index] );
@@ -187,19 +186,28 @@ public class MainViewModel extends AndroidViewModel {
 
     public void saveForgetWords( ) {
         //
+        Log.d( "MainViewModel", "saveForgetWords!!");
+//        SharedPreferences.Editor editor = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE).edit();
+//        editor.putStringSet("forget", forgetWords);
+//        editor.apply();
 
-        SharedPreferences.Editor editor = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE).edit();
-        editor.putStringSet("forget", forgetWords);
-        editor.apply();
+
+        LocalStorage.getInstance(getApplication()).saveForgetWords( forgetWords );
     }
 
     public void loadForgetWords( ) {
         //
-        SharedPreferences sp = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE);
-        forgetWords = sp.getStringSet("forget",null );
-        if ( forgetWords == null ) {
-            forgetWords  = new HashSet<String>();
-        }
+//        SharedPreferences sp = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE);
+//        forgetWords = sp.getStringSet("forget",null );
+//
+        Log.d( "MainViewModel", forgetWords.toString());
+//        if ( forgetWords == null ) {
+//            forgetWords  = new HashSet<String>();
+//            Log.d( "MainViewModel", "forgetWords ids null");
+//        }
+
+        forgetWords = LocalStorage.getInstance(getApplication()).loadForgetWords();
+
     }
 
 
