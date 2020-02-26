@@ -40,6 +40,7 @@ public class MainViewModel extends AndroidViewModel {
     private int index = 0;
     private String json = null;
     private boolean isAll = true;
+    private boolean isShwoPinyin = false;
 
     public static final String MY_PREFS_NAME = "MyPrefsFile";
 
@@ -70,7 +71,7 @@ public class MainViewModel extends AndroidViewModel {
         title.set(LessonData.getInstance().getLessonName());
         wordCount.set(words.length);
         word.set( words[index] );
-        pinyin.set( pinyins[index]);
+        setPinyinText( );
         String forgetText = String.format("Forgot:(%d)", forgetWords.size());
         filterBtnText.set( forgetText);
 
@@ -81,7 +82,7 @@ public class MainViewModel extends AndroidViewModel {
             index ++;
         }
         word.set( words[index] );
-        pinyin.set( pinyins[index]);
+        setPinyinText( );
         Log.d( "MainViewModel", "ClickNext" );
         //getAllHanzi();
         wordIndex.set(index+1);
@@ -94,7 +95,7 @@ public class MainViewModel extends AndroidViewModel {
             index --;
         }
         word.set( words[index] );
-        pinyin.set( pinyins[index]);
+        setPinyinText( );
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
     }
@@ -157,7 +158,7 @@ public class MainViewModel extends AndroidViewModel {
 
         wordCount.set(words.length);
         word.set( words[index] );
-        pinyin.set( pinyins[index]);
+        setPinyinText( );
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
         forgetBtnText.set( "Forgot");
@@ -175,36 +176,39 @@ public class MainViewModel extends AndroidViewModel {
         words = forgetWords.toArray(new String[forgetWords.size()]);
         pinyins = LessonData.getInstance().getPinyin( words);
         word.set( words[index] );
-        pinyin.set( pinyins[index]);
+        setPinyinText( );
         wordCount.set(words.length);
         wordIndex.set(index+1);
         percent.set( " " +index+"/" + words.length );
         forgetBtnText.set( "Memorized");
     }
 
+    private void setPinyinText( ) {
+
+        if (isShwoPinyin) {
+            pinyin.set(pinyins[index]);
+        } else {
+            pinyin.set("Show pinyin");
+        }
+    }
+
+    public void onClickedPinyin() {
+        isShwoPinyin = true;
+        setPinyinText( );
+        isShwoPinyin = !isShwoPinyin;
+    }
 
 
     public void saveForgetWords( ) {
-        //
-        Log.d( "MainViewModel", "saveForgetWords!!");
-//        SharedPreferences.Editor editor = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE).edit();
-//        editor.putStringSet("forget", forgetWords);
-//        editor.apply();
 
+        Log.d( "MainViewModel", "saveForgetWords!!");
 
         LocalStorage.getInstance(getApplication()).saveForgetWords( forgetWords );
     }
 
     public void loadForgetWords( ) {
-        //
-//        SharedPreferences sp = this.getApplication().getSharedPreferences(MY_PREFS_NAME, this.getApplication().MODE_PRIVATE);
-//        forgetWords = sp.getStringSet("forget",null );
-//
+
         Log.d( "MainViewModel", forgetWords.toString());
-//        if ( forgetWords == null ) {
-//            forgetWords  = new HashSet<String>();
-//            Log.d( "MainViewModel", "forgetWords ids null");
-//        }
 
         forgetWords = LocalStorage.getInstance(getApplication()).loadForgetWords();
 
@@ -227,7 +231,6 @@ public class MainViewModel extends AndroidViewModel {
         }
     };
 
-    // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
 
 
 
