@@ -22,7 +22,7 @@ import changhua.com.hanziflash.data.LocalStorage;
  */
 public class LessonData {
 
-    private List<LessonBase>  lessons  = new ArrayList<>();
+    private List<LessonBase> lessons = new ArrayList<>();
 
     private HanziCollection allLessonData;
 
@@ -31,38 +31,40 @@ public class LessonData {
 
     private static LessonData instance;
 
-    private  String[] allPinyins = null;
+    private String[] allPinyins = null;
 
 
-    public static LessonData getInstance(){
-        if( instance == null ) {
+    public static LessonData getInstance() {
+        if (instance == null) {
             instance = new LessonData();
         }
         return instance;
     }
-    private  LessonData() {
+
+    private LessonData() {
 
     }
 
-    public void initLessonData( Context c) {
+    public void initLessonData(Context c) {
 
-        String jsonText = LocalStorage.getInstance(c).loadAllLession( );
+        String jsonText = LocalStorage.getInstance(c).loadAllLession();
         loadPinyinFromAsset(c);
 
-        if ( jsonText == null || jsonText.isEmpty()) {
+        if (jsonText == null || jsonText.isEmpty()) {
             loadLessonFromAsset(c);
             saveHanziToLocal(c);
         } else {
-            getAllLesson(jsonText );
+            getAllLesson(jsonText);
         }
 
     }
 
-    public List<LessonBase> getLessionList( ) {
+    public List<LessonBase> getLessionList() {
 
-        return  lessons;
+        return lessons;
     }
-    private void loadLessonFromAsset( Context c ) {
+
+    private void loadLessonFromAsset(Context c) {
 
         try {
             InputStream is = c.getAssets().open("hanzi.json");
@@ -71,7 +73,7 @@ public class LessonData {
             is.read(buffer);
             is.close();
             String json = new String(buffer, "UTF-8");
-            getAllLesson( json );
+            getAllLesson(json);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -80,7 +82,7 @@ public class LessonData {
 
     }
 
-    private void loadPinyinFromAsset( Context c ) {
+    private void loadPinyinFromAsset(Context c) {
 
         try {
             InputStream is = c.getAssets().open("pinyin.json");
@@ -88,7 +90,7 @@ public class LessonData {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            String pinyinAll= new String(buffer, "UTF-8");
+            String pinyinAll = new String(buffer, "UTF-8");
 
             allPinyins = pinyinAll.split(",");
 
@@ -99,12 +101,12 @@ public class LessonData {
 
     }
 
-    private void getAllLesson(String json ) {
+    private void getAllLesson(String json) {
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        allLessonData = gson.fromJson( json,  HanziCollection.class);
+        allLessonData = gson.fromJson(json, HanziCollection.class);
 
         lessons = allLessonData.collection.lessons;
 
@@ -114,36 +116,37 @@ public class LessonData {
         }
     }
 
-    private void getAllLesson( ) {
+    private void getAllLesson() {
 
     }
-    public String[] getHanzi( ){
+
+    public String[] getHanzi() {
         return getHanzi(current);
     }
 
 
-    public String[] getPinyin(String[] hanzi ){
+    public String[] getPinyin(String[] hanzi) {
         int wordCount = hanzi.length;
         String[] pinyin = new String[wordCount];
 
-        for ( int i = 0; i < wordCount; i ++  ) {
+        for (int i = 0; i < wordCount; i++) {
             char word = hanzi[i].charAt(0);
-            pinyin[i] = allPinyins[word-19968];
+            pinyin[i] = allPinyins[word - 19968];
         }
 
         return pinyin;
     }
 
-    public String[][] getHanziWithPinyin( ){
+    public String[][] getHanziWithPinyin() {
         return getHanziWithPinyin(current);
     }
 
-    public String getLessonName( ) {
+    public String getLessonName() {
         return getLessonName(current);
     }
 
 
-    public void  setCurrenID( int currentID){
+    public void setCurrenID(int currentID) {
         current = currentID;
     }
 
@@ -153,51 +156,52 @@ public class LessonData {
      * @return String[0] :  Hanzi belongs to the lesson index
      *         String[1] :  Pinyin match with each hanzi in Sring[0]
      */
-    private String[][] getHanziWithPinyin( int index ){
+    private String[][] getHanziWithPinyin(int index) {
         int wordCount = lessons.get(index).getHanzi().length();
         String[][] hanziWithPinyin = new String[2][wordCount];
         hanziWithPinyin[0] = new String[wordCount];
         hanziWithPinyin[1] = new String[wordCount];
 
-        for ( int i = 0; i < wordCount; i ++  ) {
+        for (int i = 0; i < wordCount; i++) {
             char word = lessons.get(index).getHanzi().charAt(i);
-            hanziWithPinyin[0][i] = new String( word + "");
-            hanziWithPinyin[1][i] = allPinyins[word-19968];
+            hanziWithPinyin[0][i] = new String(word + "");
+            hanziWithPinyin[1][i] = allPinyins[word - 19968];
         }
 
         return hanziWithPinyin;
     }
 
-    private String[] getHanzi( int index ){
+    private String[] getHanzi(int index) {
         int wordCount = lessons.get(index).getHanzi().length();
-        String[]words = new String[wordCount];
+        String[] words = new String[wordCount];
 
-        for ( int i = 0; i < wordCount; i ++  ) {
+        for (int i = 0; i < wordCount; i++) {
             char word = lessons.get(index).getHanzi().charAt(i);
-            words[i] = new String( word + "");
+            words[i] = new String(word + "");
         }
 
         return words;
     }
 
-    public String getHanziAsString( int index ){
+    public String getHanziAsString(int index) {
 
         String allWords = new String(lessons.get(index).getHanzi());
         return allWords;
     }
 
-    public String getLessonName( int index ){
+    public String getLessonName(int index) {
 
-        return( new String(lessons.get(index).getTitle() ));
+        return (new String(lessons.get(index).getTitle()));
     }
-    public void saveHanziAsString( int index , String lessonName , String newWord){
 
-        lessons.set(index,new LessonBase( lessonName, newWord ));
+    public void saveHanziAsString(int index, String lessonName, String newWord) {
+
+        lessons.set(index, new LessonBase(lessonName, newWord));
 
         // Save
     }
 
-    private MutableLiveData <String> mCurrentName;
+    private MutableLiveData<String> mCurrentName;
 
     public MutableLiveData<String> getCurrentName() {
         if (mCurrentName == null) {
@@ -206,15 +210,15 @@ public class LessonData {
         return mCurrentName;
     }
 
-    public void appendNewLesson( Context c, String lessonName, String allWord) {
+    public void appendNewLesson(Context c, String lessonName, String allWord) {
 
-        lessons.add( new LessonBase(lessonName,allWord ));
+        lessons.add(new LessonBase(lessonName, allWord));
 
         saveHanziToLocal(c);
     }
 
-    public void removeLesson( Context c, int id) {
-        allLessonData.collection.lessons.remove( id);
+    public void removeLesson(Context c, int id) {
+        allLessonData.collection.lessons.remove(id);
 
         saveHanziToLocal(c);
 
@@ -222,19 +226,19 @@ public class LessonData {
 
     }
 
-    public void setLesson( Context c, int id, String lessonName, String allWord) {
-        if ( id >=0 && id <lessons.size() ) {
-            lessons.set( id, new LessonBase(lessonName,allWord ));
+    public void setLesson(Context c, int id, String lessonName, String allWord) {
+        if (id >= 0 && id < lessons.size()) {
+            lessons.set(id, new LessonBase(lessonName, allWord));
             saveHanziToLocal(c);
         }
     }
 
-    private void saveHanziToLocal( Context c) {
+    private void saveHanziToLocal(Context c) {
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        LocalStorage.getInstance(c).saveAllLession( gson.toJson(allLessonData) );
+        LocalStorage.getInstance(c).saveAllLession(gson.toJson(allLessonData));
     }
 
 

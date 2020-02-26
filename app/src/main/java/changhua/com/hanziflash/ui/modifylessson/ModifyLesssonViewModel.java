@@ -20,7 +20,7 @@ public class ModifyLesssonViewModel extends AndroidViewModel {
         return onEndLive;
     }
 
-    public ModifyLesssonViewModel( Application app) {
+    public ModifyLesssonViewModel(Application app) {
         super(app);
         word = new ObservableField<>("");
         lessonName = new ObservableField<>("");
@@ -29,7 +29,7 @@ public class ModifyLesssonViewModel extends AndroidViewModel {
     public void onClickedSave() {
 
         if (lessonID < 0) {
-            LessonData.getInstance().appendNewLesson(getApplication(),lessonName.get(), word.get());
+            LessonData.getInstance().appendNewLesson(getApplication(), lessonName.get(), word.get());
         } else {
             LessonData.getInstance().setLesson(getApplication(), lessonID, lessonName.get(), word.get());
         }
@@ -39,7 +39,7 @@ public class ModifyLesssonViewModel extends AndroidViewModel {
 
     public void onClickedDelete() {
 
-        LessonData.getInstance().removeLesson (getApplication(), lessonID );
+        LessonData.getInstance().removeLesson(getApplication(), lessonID);
         onEndLive.setValue(true);
     }
 

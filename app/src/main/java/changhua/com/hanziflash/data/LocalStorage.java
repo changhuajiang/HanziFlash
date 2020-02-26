@@ -44,7 +44,7 @@ public class LocalStorage {
         return forgetWords;
     }
 
-    public void saveAllLession( String jsonText ) {
+    public void saveAllLession(String jsonText) {
         SharedPreferences.Editor editor = contex.getSharedPreferences(MY_PREFS_NAME, contex.MODE_PRIVATE).edit();
         editor.putString("hanzi", jsonText);
         editor.apply();
